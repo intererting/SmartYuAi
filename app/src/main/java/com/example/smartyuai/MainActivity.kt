@@ -2,6 +2,7 @@ package com.example.smartyuai
 
 import android.Manifest
 import android.app.ActivityManager
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -13,8 +14,11 @@ import android.content.ServiceConnection
 import android.opengl.Matrix
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.Process
+import android.os.SystemClock
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -40,14 +44,58 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*   override fun onSaveInstanceState(outState: Bundle) {
+           println("onSaveInstanceState")
+           outState.putString("name", "yuliyang")
+           super.onSaveInstanceState(outState)
+       }
+
+       override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+           println("onRestoreInstanceState")
+           println(savedInstanceState.getString("name"))
+           super.onRestoreInstanceState(savedInstanceState)
+       }*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        //闹钟
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//        val intent = Intent(applicationContext, MyService::class.java)
+//        val pendingIntent = PendingIntent.getService(
+//            applicationContext,
+//            1000,
+//            intent,
+//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+//        )
+        val intent = Intent(applicationContext, MyReceiver::class.java).apply {
+            action = "com.yly.remove"
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            1000,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        alarmManager.setAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + 10000,
+            pendingIntent
+        )
+
+
+//        println("activity onCreate ${savedInstanceState == null}")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         findViewById<Button>(R.id.stopService).setOnClickListener {
             stopService(Intent(this, MyService::class.java))
+        }
+
+        findViewById<Button>(R.id.sendNotification).setOnClickListener {
+            sendBroadcast(Intent("com.example.close").apply {
+            })
         }
 
         findViewById<Button>(R.id.kill).setOnClickListener {
@@ -121,6 +169,19 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
+    }
+
+    override fun onDestroy() {
+        println("onDestroy")
+//        stopService(Intent(this, MyService::class.java))
+        super.onDestroy()
     }
 
 
