@@ -25,6 +25,10 @@
                 <action android:name="com.yly.remove" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".SecondActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -34,9 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".SecondService" />
         <service
             android:name=".MyService"
             android:process=":yuliyang" />
+
         <activity
             android:name=".WebSocketActivity"
             android:exported="false" />

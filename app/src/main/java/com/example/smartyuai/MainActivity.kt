@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 //        )
         val intent = Intent(applicationContext, MyReceiver::class.java).apply {
             action = "com.yly.remove"
+            addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
@@ -97,6 +98,11 @@ class MainActivity : AppCompatActivity() {
             sendBroadcast(Intent("com.example.close").apply {
             })
         }
+
+        findViewById<Button>(R.id.startSecond).setOnClickListener {
+            startActivity(Intent(this, SecondActivity::class.java))
+        }
+
 
         findViewById<Button>(R.id.kill).setOnClickListener {
             stopService(Intent(this, MyService::class.java))

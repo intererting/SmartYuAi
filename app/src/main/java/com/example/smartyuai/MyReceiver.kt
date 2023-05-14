@@ -12,6 +12,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Process
 import android.os.SystemClock
+import android.provider.LiveFolders.INTENT
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat.getSystemService
 
@@ -32,36 +33,39 @@ class MyReceiver : BroadcastReceiver() {
                 break
             }
         }
+
         if (!exists) {
             println("消息进程不存在")
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val channelId = "100"
-            val channelName = "default channel"
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                    channelId,
-                    channelName,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
-                notificationManager.createNotificationChannel(channel)
-            }
-            val notification =
-                NotificationCompat.Builder(context, channelId)
-                    .setContentTitle("title")
-                    .setContentText("text ${System.currentTimeMillis()}")
-                    .setContentInfo("info")
-                    .setAutoCancel(true)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .build()
-            notificationManager.notify(1000, notification)
-            println("发送通知完成")
+            context.startService(Intent(context, MyService::class.java))
+//            val notificationManager =
+//                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//            val channelId = "100"
+//            val channelName = "default channel"
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                val channel = NotificationChannel(
+//                    channelId,
+//                    channelName,
+//                    NotificationManager.IMPORTANCE_DEFAULT
+//                )
+//                notificationManager.createNotificationChannel(channel)
+//            }
+//            val notification =
+//                NotificationCompat.Builder(context, channelId)
+//                    .setContentTitle("title")
+//                    .setContentText("text ${System.currentTimeMillis()}")
+//                    .setContentInfo("info")
+//                    .setAutoCancel(true)
+//                    .setSmallIcon(R.mipmap.ic_launcher)
+//                    .build()
+//            notificationManager.notify(1000, notification)
+//            println("发送通知完成")
         } else {
             println("消息进程存在")
         }
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(context, MyReceiver::class.java).apply {
-            action = "com.yly.remove"
+//            action = "com.yly.remove"
+            addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -71,7 +75,7 @@ class MyReceiver : BroadcastReceiver() {
         )
         alarmManager.setAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + 10000,
+            SystemClock.elapsedRealtime() + 60000,
             pendingIntent
         )
     }

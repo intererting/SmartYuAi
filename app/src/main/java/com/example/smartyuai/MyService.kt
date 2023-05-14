@@ -33,15 +33,15 @@ class MyService : Service() {
     override fun onCreate() {
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        applicationContext.registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                println("onReceive")
-                notificationManager.cancel(1000)
-            }
-
-        }, IntentFilter().apply {
-            addAction("com.example.close")
-        })
+//        applicationContext.registerReceiver(object : BroadcastReceiver() {
+//            override fun onReceive(context: Context?, intent: Intent?) {
+//                println("onReceive")
+//                notificationManager.cancel(1000)
+//            }
+//
+//        }, IntentFilter().apply {
+//            addAction("com.example.close")
+//        })
 
         val channelId = "100"
         val channelName = "default channel"
@@ -56,7 +56,7 @@ class MyService : Service() {
         destroy = false
         Thread {
             while (true) {
-                println("loop ${System.identityHashCode(this)}")
+                println("loop ${System.currentTimeMillis()}")
                 val notification =
                     NotificationCompat.Builder(applicationContext, channelId)
                         .setContentTitle("title")

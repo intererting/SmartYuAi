@@ -11,41 +11,31 @@
         android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="start service"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="start service" />
 
     <Button
         android:id="@+id/kill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="kill service!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="kill service!" />
 
     <Button
         android:id="@+id/stopService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="stopService()"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="stopService()" />
 
     <Button
         android:id="@+id/sendNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sendNotification()"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="sendNotification()" />
+
+    <Button
+        android:id="@+id/startSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="startSecond" />
 
     <ImageView
         android:id="@+id/imageView"

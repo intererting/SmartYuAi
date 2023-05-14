@@ -3,10 +3,13 @@ package com.example.smartyuai
 import android.app.ActivityManager
 import android.app.Application
 import android.app.NotificationManager
+import android.app.Service
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Build
+import android.os.IBinder
 import android.os.Process
 import android.text.TextUtils
 import androidx.annotation.Nullable
@@ -22,22 +25,32 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (packageName.equals(ProcessUtil.getCurrentProcessName(this))) {
-//            stopService(Intent(this, MyService::class.java))
-//            val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-//            for (process in activityManager.runningAppProcesses) {
-//                if (process.processName.contains(":yuliyang")) {
-//                    Process.killProcess(process.pid)
-//                }
-//            }
+            stopService(Intent(this, MyService::class.java))
+            val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            for (process in activityManager.runningAppProcesses) {
+                if (process.processName.contains(":yuliyang")) {
+                    Process.killProcess(process.pid)
+                }
+            }
 //            sendBroadcast(Intent("com.example.close").apply {
 //            })
 
-//            val notificationManager =
-//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            for (notification in notificationManager.activeNotifications) {
-//                println(notification.id)
-//            }
-//            notificationManager.cancelAll()
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            for (notification in notificationManager.activeNotifications) {
+                println(notification.id)
+            }
+            notificationManager.cancelAll()
+
+//            bindService(Intent(this, MyService::class.java), object : ServiceConnection {
+//                override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+//                    println("MyApplication onServiceConnected")
+//                }
+//
+//                override fun onServiceDisconnected(name: ComponentName?) {
+//                }
+//
+//            }, Service.BIND_IMPORTANT)
         }
     }
 
